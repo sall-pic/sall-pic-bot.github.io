@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
+
+    <title>Image Cleaner</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main class="app">
+
+        <!-- ЛОГОТИП И ЗАГОЛОВОК -->
+        <header class="header">
+
+            <div class="logo">❤️</div>
+
+            <h1>Image Cleaner</h1>
+
+            <p>
+                Удали цензуру вручную,<br>
+                используя оригинальную версию изображения.
+            </p>
+
+        </header>
+
+
+        <!-- ЗАГРУЗКА -->
+        <section class="upload-section">
+
+            <div class="section-title">
+                <h2>Подготовка</h2>
+
+                <p>
+                    Загрузи две версии одного изображения
+                </p>
+            </div>
+
+
+            <!-- ЦЕНЗУРНАЯ -->
+            <label class="upload-card">
+
+                <div class="upload-icon">
+                    ▣
+                </div>
+
+                <div class="upload-info">
+                    <strong>Цензурная картинка</strong>
+                    <span>Версия с цензурой</span>
+                </div>
+
+                <div class="upload-button">
+                    Выбрать
+                </div>
+
+                <input
+                    type="file"
+                    id="censoredInput"
+                    accept="image/*"
+                >
+
+            </label>
+
+
+            <!-- ОРИГИНАЛ -->
+            <label class="upload-card">
+
+                <div class="upload-icon">
+                    ◉
+                </div>
+
+                <div class="upload-info">
+                    <strong>Оригинальная картинка</strong>
+                    <span>Версия без цензуры</span>
+                </div>
+
+                <div class="upload-button">
+                    Выбрать
+                </div>
+
+                <input
+                    type="file"
+                    id="originalInput"
+                    accept="image/*"
+                >
+
+            </label>
+
+        </section>
+
+
+        <!-- РЕДАКТОР -->
+        <section class="editor-section">
+
+            <div class="editor-header">
+
+                <div>
+                    <h2>Редактор</h2>
+                    <p>Стирай пальцем/мышкой по изображению</p>
+                </div>
+
+                <span class="editor-badge">
+                    ✦ Ластик
+                </span>
+
+            </div>
+
+
+            <div class="editor" id="imageContainer">
+
+                <canvas id="originalCanvas"></canvas>
+
+                <canvas id="censoredCanvas"></canvas>
+
+            </div>
+
+
+            <!-- ЛАСТИК -->
+            <div class="brush-controls">
+
+                <div class="brush-top">
+
+                    <span>
+                        Размер ластика
+                    </span>
+
+                    <strong>
+                        <span id="brushSizeValue">80</span> px
+                    </strong>
+
+                </div>
+
+
+                <input
+                    type="range"
+                    id="brushSize"
+                    min="10"
+                    max="500"
+                    value="80"
+                >
+
+
+                <div class="range-labels">
+
+                    <span>10</span>
+
+                    <span>500 px</span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <footer>
+            Image Cleaner
+            <span>•</span>
+            Telegram Mini App
+        </footer>
+
+    </main>
+
+
+    <script src="app.js"></script>
+
+</body>
+</html>
