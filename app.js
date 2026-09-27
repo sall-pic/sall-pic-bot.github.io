@@ -197,11 +197,6 @@ brushSizeSlider.addEventListener("input", function () {
     brushSizeValue.textContent = brushSize;
 });
 
-
-// -------------------------
-// Загрузка цензурной картинки
-// -------------------------
-
 censoredInput.addEventListener("change", function () {
     const file = censoredInput.files[0];
 
@@ -222,11 +217,6 @@ censoredInput.addEventListener("change", function () {
 
     image.src = imageUrl;
 });
-
-
-// -------------------------
-// Загрузка оригинальной картинки
-// -------------------------
 
 originalInput.addEventListener("change", function () {
     const file = originalInput.files[0];
@@ -249,11 +239,6 @@ originalInput.addEventListener("change", function () {
     image.src = imageUrl;
 });
 
-
-// -------------------------
-// Проверяем обе картинки
-// -------------------------
-
 function checkImages() {
     if (censoredImage && originalImage) {
         setupEditor();
@@ -261,25 +246,17 @@ function checkImages() {
     }
 }
 
-
-// -------------------------
-// Создаём редактор
-// -------------------------
-
 function setupEditor() {
 
     const width = originalImage.naturalWidth;
     const height = originalImage.naturalHeight;
-
-    // Размер обоих Canvas
+    
     originalCanvas.width = width;
     originalCanvas.height = height;
 
     censoredCanvas.width = width;
     censoredCanvas.height = height;
 
-
-    // Рисуем оригинал на нижнем Canvas
     originalCtx.clearRect(0, 0, width, height);
 
     originalCtx.drawImage(
@@ -290,8 +267,6 @@ function setupEditor() {
         height
     );
 
-
-    // Рисуем цензуру на верхнем Canvas
     censoredCtx.clearRect(0, 0, width, height);
 
     censoredCtx.drawImage(
@@ -302,15 +277,8 @@ function setupEditor() {
         height
     );
 
-
-    // Показываем редактор
     imageContainer.style.display = "block";
 }
-
-
-// -------------------------
-// ЛАСТИК
-// -------------------------
 
 let isErasing = false;
 let undoHistory = [];
@@ -341,7 +309,6 @@ censoredCanvas.addEventListener("pointerdown", function (event) {
     erase(event);
 });
 
-// Начало стирания
 censoredCanvas.addEventListener("pointerdown", function (event) {
 
     if (event.button !== 0) {
@@ -357,15 +324,12 @@ censoredCanvas.addEventListener("pointerdown", function (event) {
     erase(event);
 });
 
-
-// Движение ластика
 censoredCanvas.addEventListener("pointermove", function (event) {
 
     if (!isErasing) {
         return;
     }
-
-    // Если ЛКМ реально уже не зажата — прекращаем стирание
+    
     if (event.buttons !== 1) {
 
         isErasing = false;
@@ -376,8 +340,6 @@ censoredCanvas.addEventListener("pointermove", function (event) {
     erase(event);
 });
 
-
-// Отпустили ЛКМ
 censoredCanvas.addEventListener("pointerup", function (event) {
 
     isErasing = false;
@@ -397,8 +359,6 @@ undoButton.addEventListener("click", function () {
 
     censoredCtx.putImageData(previousState, 0, 0);
 
-    // Если больше нечего отменять —
-    // отключаем обе кнопки
     if (undoHistory.length === 0) {
         undoButton.disabled = true;
         resetButton.disabled = true;
@@ -406,23 +366,15 @@ undoButton.addEventListener("click", function () {
 
 });
 
-
-// Браузер прервал указатель
 censoredCanvas.addEventListener("pointercancel", function () {
 
     isErasing = false;
 });
 
-
-// Указатель потерял захват
 censoredCanvas.addEventListener("lostpointercapture", function () {
 
     isErasing = false;
 });
-
-// -------------------------
-// Функция стирания
-// -------------------------
 
 function erase(event) {
 
@@ -437,7 +389,6 @@ function erase(event) {
 
     censoredCtx.save();
 
-    // Делаем рисуемое место прозрачным
     censoredCtx.globalCompositeOperation = "destination-out";
 
     resetButton.disabled = false;
@@ -458,10 +409,6 @@ function erase(event) {
 
     censoredCtx.restore();
 }
-
-// -------------------------
-// ФУНКЦИЯ СОХРАНЕНИЯ
-// -------------------------
 
 saveButton.addEventListener("click", function () {
     if (saveMenu.style.display === "block") {
@@ -491,7 +438,6 @@ saveCensored.addEventListener("click", function () {
     saveMenu.style.display = "none";
 });
 
-
 saveOriginal.addEventListener("click", function () {
     const link = document.createElement("a");
 
@@ -502,7 +448,6 @@ saveOriginal.addEventListener("click", function () {
 
     saveMenu.style.display = "none";
 });
-
 
 saveBoth.addEventListener("click", function () {
     const censoredLink = document.createElement("a");
@@ -519,10 +464,6 @@ saveBoth.addEventListener("click", function () {
 
     saveMenu.style.display = "none";
 });
-
-// -------------------------
-// КНОПКА СБРОСА И ОТМЕНЫ
-// --
 
 resetButton.addEventListener("click", function () {
 
