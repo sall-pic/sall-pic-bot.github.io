@@ -21,12 +21,17 @@
 
             <div class="logo">❤️</div>
 
-            <h1>Image Cleaner</h1>
+           <h1 id="title">Image Cleaner</h1>
 
-            <p>
+            <p id="subtitle">
                 Удали цензуру вручную,<br>
                 используя оригинальную версию изображения.
             </p>
+
+             <button id="languageToggle">
+    <span id="languageFlag" class="flag flag-ru"></span>
+<span id="languageCode">RU</span>
+</button>
 
         </header>
 
@@ -35,11 +40,11 @@
         <section class="upload-section">
 
             <div class="section-title">
-                <h2>Подготовка</h2>
+                <h2 id="preparation">Подготовка</h2>
 
-                <p>
-                    Загрузи две версии одного изображения
-                </p>
+                <p id="preparationText">
+    Загрузи две версии одного изображения
+</p>
             </div>
 
 
@@ -51,13 +56,21 @@
                 </div>
 
                 <div class="upload-info">
-                    <strong>Цензурная картинка</strong>
-                    <span>Версия с цензурой</span>
+                    <strong id="censored">Цензурная картинка</strong>
+                    <span id="censoredText">Версия с цензурой</span>
                 </div>
 
-                <div class="upload-button">
-                    Выбрать
-                </div>
+                <div class="upload-actions">
+
+    <div class="upload-button" id="censoredSelect">
+        Выбрать
+    </div>
+
+    <div class="upload-button replace-button" id="censoredChange">
+        Заменить
+    </div>
+
+</div>
 
                 <input
                     type="file"
@@ -76,13 +89,21 @@
                 </div>
 
                 <div class="upload-info">
-                    <strong>Оригинальная картинка</strong>
-                    <span>Версия без цензуры</span>
+                    <strong id="original">Оригинальная картинка</strong>
+                    <span id="originalText">Версия без цензуры</span>
                 </div>
 
-                <div class="upload-button">
-                    Выбрать
-                </div>
+               <div class="upload-actions">
+
+    <div class="upload-button" id="originalSelect">
+        Выбрать
+    </div>
+
+    <div class="upload-button replace-button" id="originalChange">
+        Заменить
+    </div>
+
+</div>
 
                 <input
                     type="file"
@@ -101,13 +122,13 @@
             <div class="editor-header">
 
                 <div>
-                    <h2>Редактор</h2>
-                    <p>Стирай пальцем/мышкой по изображению</p>
+                    <h2 id="editor">Редактор</h2>
+                    <p id="editorText">Стирай пальцем/мышкой по изображению</p>
                 </div>
 
-                <span class="editor-badge">
-                    ✦ Ластик
-                </span>
+               <span class="editor-badge" id="eraser">
+    ✦ Ластик
+</span>
 
             </div>
 
@@ -126,10 +147,9 @@
 
                 <div class="brush-top">
 
-                    <span>
-                        Размер ластика
-                    </span>
-
+                    <span id="brushSizeText">
+    Размер ластика
+</span>
                     <strong>
                         <span id="brushSizeValue">80</span> px
                     </strong>
@@ -156,13 +176,50 @@
 
             </div>
 
-        </section>
+<div class="editor-actions">
+
+    <button type="button" id="undoButton" disabled>
+        ↶ <span id="undoButtonText">Отменить</span>
+    </button>
+
+    <button type="button" id="resetButton" disabled>
+        ↻ <span id="resetButtonText">Сбросить</span>
+    </button>
+
+    <div class="save-container">
+
+        <button type="button" id="saveButton" class="save-button" disabled>
+            <span id="saveButtonText">Сохранить</span>
+            <span id="saveArrow">▾</span>
+        </button>
+
+        <div id="saveMenu" class="save-menu">
+
+            <button type="button" id="saveCensored">
+                Цензурную картинку
+            </button>
+
+            <button type="button" id="saveOriginal">
+                Оригинальную картинку
+            </button>
+
+            <button type="button" id="saveBoth">
+                Обе картинки
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+        </section> 
 
         <footer>
-            Image Cleaner
-            <span>•</span>
-            Telegram Mini App
-        </footer>
+    Image Cleaner
+    <span>•</span>
+    Telegram Mini App
+</footer>
 
     </main>
 
