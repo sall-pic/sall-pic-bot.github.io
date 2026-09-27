@@ -554,3 +554,6 @@ resetButton.addEventListener("click", function () {
    resetButton.disabled = true;
 
 });
+
+censoredCtx.restore();
+}
