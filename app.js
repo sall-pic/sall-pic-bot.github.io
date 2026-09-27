@@ -1,205 +1,1043 @@
-const censoredInput = document.getElementById("censoredInput");
-const originalInput = document.getElementById("originalInput");
+/* =========================
+   ОСНОВА
+========================= */
 
-const imageContainer = document.getElementById("imageContainer");
+* {
+    box-sizing: border-box;
+}
 
-const originalCanvas = document.getElementById("originalCanvas");
-const censoredCanvas = document.getElementById("censoredCanvas");
+html {
+    background: #070b14;
+}
 
-const originalCtx = originalCanvas.getContext("2d");
-const censoredCtx = censoredCanvas.getContext("2d");
+body {
+    margin: 0;
+    padding: 0;
 
-let censoredImage = null;
-let originalImage = null;
+    min-height: 100vh;
 
-let brushSize = 80;
+    background:
+        radial-gradient(
+            circle at 50% -10%,
+            #182344 0%,
+            #0b1020 38%,
+            #070b14 75%
+        );
 
-const brushSizeSlider = document.getElementById("brushSize");
-const brushSizeValue = document.getElementById("brushSizeValue");
+    color: #ffffff;
 
-brushSizeSlider.addEventListener("input", function () {
-    brushSize = Number(brushSizeSlider.value);
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
 
-    brushSizeValue.textContent = brushSize;
-});
+    -webkit-font-smoothing: antialiased;
+}
 
 
-// -------------------------
-// Загрузка цензурной картинки
-// -------------------------
+/* =========================
+   ОСНОВНОЙ КОНТЕЙНЕР
+========================= */
 
-censoredInput.addEventListener("change", function () {
-    const file = censoredInput.files[0];
+.app {
+    width: 100%;
+    max-width: 720px;
 
-    if (!file) {
-        return;
+    margin: 0 auto;
+
+    padding:
+        24px
+        20px
+        40px;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+    text-align: center;
+
+    margin-bottom: 48px;
+}
+
+
+/* ЛОГО */
+
+.logo {
+    width: 64px;
+    height: 64px;
+
+    margin: 0 auto 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 20px;
+
+    background: linear-gradient(
+        135deg,
+        #0b1020,
+        #172554,
+        #2e1065
+    );
+
+    font-size: 27px;
+
+    box-shadow:
+        0 12px 35px rgba(46, 16, 101, 0.35);
+}
+
+
+/* ЗАГОЛОВОК */
+
+.header h1 {
+    margin: 0;
+
+    font-size: clamp(32px, 7vw, 44px);
+
+    line-height: 1.05;
+
+    letter-spacing: -1.5px;
+
+    font-weight: 800;
+}
+
+
+/* ОПИСАНИЕ */
+
+.header p {
+    margin: 18px auto 0;
+
+    max-width: 500px;
+
+    color: #9ca3b5;
+
+    font-size: 16px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================
+   СЕКЦИИ
+========================= */
+
+.upload-section,
+.editor-section {
+    margin-bottom: 36px;
+}
+
+
+.section-title {
+    margin-bottom: 16px;
+}
+
+
+.section-title h2,
+.editor-header h2 {
+    margin: 0;
+
+    font-size: 23px;
+
+    letter-spacing: -0.4px;
+}
+
+
+.section-title p,
+.editor-header p {
+    margin: 7px 0 0;
+
+    color: #747d92;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   КАРТОЧКИ ЗАГРУЗКИ
+========================= */
+
+.upload-card {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+
+    min-height: 94px;
+
+    margin-bottom: 14px;
+
+    padding: 16px;
+
+    border: 1px solid #242b3b;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #171c29,
+            #111621
+        );
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        border-color 0.15s ease,
+        background 0.15s ease;
+}
+
+
+.upload-card:active {
+    transform: scale(0.985);
+
+    border-color: #4c3a8c;
+}
+
+
+.upload-card:hover {
+    border-color: #34405a;
+}
+
+
+/* ИКОНКА */
+
+.upload-icon {
+    flex-shrink: 0;
+
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-right: 14px;
+
+    border-radius: 15px;
+
+    background: #202536;
+
+    color: #9274ff;
+
+    font-size: 23px;
+}
+
+
+/* ТЕКСТ */
+
+.upload-info {
+    min-width: 0;
+
+    flex: 1;
+}
+
+
+.upload-info strong {
+    display: block;
+
+    margin-bottom: 5px;
+
+    font-size: 16px;
+
+    font-weight: 700;
+}
+
+
+.upload-info span {
+    display: block;
+
+    color: #737d91;
+
+    font-size: 13px;
+}
+
+
+/* КНОПКА */
+
+.upload-button {
+    flex-shrink: 0;
+
+    padding: 12px 16px;
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7047ff,
+            #5930d8
+        );
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    box-shadow:
+        0 8px 20px rgba(91, 48, 216, 0.22);
+}
+
+
+/* СКРЫВАЕМ НАСТОЯЩИЙ INPUT */
+
+.upload-card input[type="file"] {
+    display: none;
+}
+
+
+/* =========================
+   РЕДАКТОР
+========================= */
+
+.editor-header {
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 14px;
+}
+
+
+.editor-badge {
+    flex-shrink: 0;
+
+    padding: 8px 11px;
+
+    border-radius: 10px;
+
+    background: #171c27;
+
+    color: #858da0;
+
+    font-size: 12px;
+}
+
+
+/* =========================
+   CANVAS
+========================= */
+
+.editor {
+    position: relative;
+
+    width: 100%;
+
+    margin: 0 auto;
+
+    overflow: hidden;
+
+    border: 1px solid #2b3242;
+
+    border-radius: 20px;
+
+    background: #0d111b;
+
+    box-shadow:
+        0 20px 45px rgba(0, 0, 0, 0.25);
+
+    line-height: 0;
+}
+
+
+.editor canvas {
+    display: block;
+
+    width: 100%;
+    height: auto;
+
+    max-width: 100%;
+}
+
+
+#censoredCanvas {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    cursor: crosshair;
+
+    touch-action: none;
+
+    user-select: none;
+
+    -webkit-user-select: none;
+}
+
+
+/* =========================
+   ЛАСТИК
+========================= */
+
+.brush-controls {
+    margin-top: 16px;
+
+    padding: 18px;
+
+    border: 1px solid #242b3b;
+
+    border-radius: 18px;
+
+    background: #111621;
+}
+
+
+.brush-top {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 15px;
+
+    color: #9ba3b5;
+
+    font-size: 14px;
+}
+
+
+.brush-top strong {
+    color: white;
+
+    font-size: 15px;
+}
+
+
+/* RANGE */
+
+#brushSize {
+    display: block;
+
+    width: 100%;
+
+    height: 6px;
+
+    margin: 0;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    border-radius: 10px;
+
+    background: #292f40;
+
+    outline: none;
+
+    cursor: pointer;
+}
+
+
+/* Ползунок Chrome / Safari */
+
+#brushSize::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+
+    width: 22px;
+    height: 22px;
+
+    border: 3px solid #ffffff;
+
+    border-radius: 50%;
+
+    background: #7047ff;
+
+    box-shadow:
+        0 4px 14px rgba(112, 71, 255, 0.45);
+}
+
+
+/* Ползунок Firefox */
+
+#brushSize::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+
+    border: 3px solid #ffffff;
+
+    border-radius: 50%;
+
+    background: #7047ff;
+
+    box-shadow:
+        0 4px 14px rgba(112, 71, 255, 0.45);
+}
+
+
+.range-labels {
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-top: 9px;
+
+    color: #596276;
+
+    font-size: 11px;
+}
+
+
+/* =========================
+   ПОДСКАЗКА
+========================= */
+
+.tip {
+    display: flex;
+
+    gap: 13px;
+
+    padding: 17px;
+
+    border: 1px solid #252c3d;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(23, 37, 84, 0.35),
+            rgba(46, 16, 101, 0.2)
+        );
+}
+
+
+.tip-icon {
+    flex-shrink: 0;
+
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #1b2440;
+
+    font-size: 18px;
+}
+
+
+.tip strong {
+    display: block;
+
+    margin-bottom: 5px;
+
+    font-size: 14px;
+}
+
+
+.tip p {
+    margin: 0;
+
+    color: #858ea1;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    padding-top: 28px;
+
+    text-align: center;
+
+    color: #4f586b;
+
+    font-size: 12px;
+}
+
+
+footer span {
+    margin: 0 5px;
+
+    color: #6d28d9;
+}
+
+
+/* =========================
+   МОБИЛЬНЫЕ
+========================= */
+
+@media (max-width: 560px) {
+
+    .app {
+        padding:
+            20px
+            14px
+            30px;
     }
 
-    const imageUrl = URL.createObjectURL(file);
 
-    const image = new Image();
-
-    image.onload = function () {
-        censoredImage = image;
-        checkImages();
-    };
-
-    image.src = imageUrl;
-});
-
-
-// -------------------------
-// Загрузка оригинальной картинки
-// -------------------------
-
-originalInput.addEventListener("change", function () {
-    const file = originalInput.files[0];
-
-    if (!file) {
-        return;
+    .header {
+        margin-bottom: 36px;
     }
 
-    const imageUrl = URL.createObjectURL(file);
 
-    const image = new Image();
+    .logo {
+        width: 56px;
+        height: 56px;
 
-    image.onload = function () {
-        originalImage = image;
-        checkImages();
-    };
+        margin-bottom: 15px;
 
-    image.src = imageUrl;
-});
+        border-radius: 17px;
+
+        font-size: 24px;
+    }
 
 
-// -------------------------
-// Проверяем обе картинки
-// -------------------------
+    .header h1 {
+        font-size: 34px;
 
-function checkImages() {
-    if (censoredImage && originalImage) {
-        setupEditor();
+        letter-spacing: -1.2px;
+    }
+
+
+    .header p {
+        margin-top: 14px;
+
+        font-size: 14px;
+
+        line-height: 1.5;
+    }
+
+
+    .section-title h2,
+    .editor-header h2 {
+        font-size: 21px;
+    }
+
+
+    .upload-card {
+        min-height: 84px;
+
+        padding: 13px;
+
+        border-radius: 17px;
+    }
+
+
+    .upload-icon {
+        width: 46px;
+        height: 46px;
+
+        margin-right: 11px;
+
+        border-radius: 13px;
+
+        font-size: 20px;
+    }
+
+
+    .upload-info strong {
+        font-size: 14px;
+    }
+
+
+    .upload-info span {
+        font-size: 11px;
+    }
+
+
+    .upload-button {
+        padding: 10px 12px;
+
+        border-radius: 11px;
+
+        font-size: 12px;
+    }
+
+
+    .editor {
+        border-radius: 17px;
+    }
+
+
+    .brush-controls {
+        padding: 15px;
+
+        border-radius: 16px;
+    }
+
+
+    .tip {
+        padding: 14px;
+
+        border-radius: 16px;
     }
 }
 
 
-// -------------------------
-// Создаём редактор
-// -------------------------
+/* =========================
+   ОЧЕНЬ МАЛЕНЬКИЕ ЭКРАНЫ
+========================= */
 
-function setupEditor() {
+@media (max-width: 370px) {
 
-    const width = originalImage.naturalWidth;
-    const height = originalImage.naturalHeight;
-
-    // Размер обоих Canvas
-    originalCanvas.width = width;
-    originalCanvas.height = height;
-
-    censoredCanvas.width = width;
-    censoredCanvas.height = height;
+    .app {
+        padding-left: 11px;
+        padding-right: 11px;
+    }
 
 
-    // Рисуем оригинал на нижнем Canvas
-    originalCtx.clearRect(0, 0, width, height);
+    .header h1 {
+        font-size: 30px;
+    }
 
-    originalCtx.drawImage(
-        originalImage,
-        0,
-        0,
-        width,
-        height
+
+    .upload-card {
+        padding: 11px;
+    }
+
+
+    .upload-icon {
+        width: 42px;
+        height: 42px;
+
+        margin-right: 9px;
+    }
+
+
+    .upload-info strong {
+        font-size: 13px;
+    }
+
+
+    .upload-button {
+        padding: 9px 10px;
+
+        font-size: 11px;
+    }
+
+
+    .editor-badge {
+        display: none;
+    }
+}
+
+/* =========================
+   КНОПКА СМЕНЫ ЯЗЫКА
+========================= */
+
+#languageToggle {
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: linear-gradient(135deg, #5b21b6, #2563eb);
+color: white;
+
+    padding: 7px 12px;
+    border-radius: 999px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    margin-top: 10px;
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+#languageToggle:hover {
+   background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
+}
+
+#languageToggle:active {
+    transform: scale(0.95);
+}
+
+/* =========================
+      ЗНАЧКИ ФЛАГОВ
+========================= */
+
+.flag {
+    width: 18px;
+    height: 13px;
+
+    display: inline-block;
+
+    border-radius: 2px;
+
+    overflow: hidden;
+
+    flex-shrink: 0;
+}
+
+.flag-en {
+    background-color: #012169;
+
+    background-image:
+        /* Красный вертикальный крест */
+        linear-gradient(
+            to right,
+            transparent 43%,
+            #c8102e 43%,
+            #c8102e 57%,
+            transparent 57%
+        ),
+
+        /* Красный горизонтальный крест */
+        linear-gradient(
+            to bottom,
+            transparent 35%,
+            #c8102e 35%,
+            #c8102e 65%,
+            transparent 65%
+        ),
+
+        /* Белый вертикальный крест */
+        linear-gradient(
+            to right,
+            transparent 37%,
+            white 37%,
+            white 63%,
+            transparent 63%
+        ),
+
+        /* Белый горизонтальный крест */
+        linear-gradient(
+            to bottom,
+            transparent 25%,
+            white 25%,
+            white 75%,
+            transparent 75%
+        ),
+
+        /* Белая диагональ */
+        linear-gradient(
+            35deg,
+            transparent 38%,
+            white 38%,
+            white 46%,
+            transparent 46%,
+            transparent 54%,
+            white 54%,
+            white 62%,
+            transparent 62%
+        ),
+
+        /* Вторая белая диагональ */
+        linear-gradient(
+            -35deg,
+            transparent 38%,
+            white 38%,
+            white 46%,
+            transparent 46%,
+            transparent 54%,
+            white 54%,
+            white 62%,
+            transparent 62%
+        );
+}
+
+.flag-ru {
+    background: linear-gradient(
+        to bottom,
+        #ffffff 0%,
+        #ffffff 33%,
+        #2563eb 33%,
+        #2563eb 66%,
+        #dc2626 66%,
+        #dc2626 100%
     );
+}
 
+/* =========================
+      КНОПКИ "ЗАМЕНИТЬ"
+========================= */
 
-    // Рисуем цензуру на верхнем Canvas
-    censoredCtx.clearRect(0, 0, width, height);
+.upload-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
 
-    censoredCtx.drawImage(
-        censoredImage,
-        0,
-        0,
-        width,
-        height
-    );
+.replace-button {
+    background: rgba(91, 33, 182, 0.25);
+    border: none;
+    display: none;
+}
 
+.replace-button:hover {
+    background: rgba(124, 58, 237, 0.4);
+}
 
-    // Показываем редактор
-    imageContainer.style.display = "block";
+.editor-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+}
+
+.save-container {
+    position: relative;
+    display: inline-block;
+    width: max-content;
+    .save-container {
+    position: relative;
+    display: inline-block;
+    width: max-content;
+}
+}
+
+.save-button {
+    border: none;
+    background: linear-gradient(135deg, #5b21b6, #2563eb);
+    color: white;
+
+    padding: 9px 16px;
+    border-radius: 10px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.save-button:hover:not(:disabled) {
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.25);
+}
+
+.save-button:active:not(:disabled) {
+    transform: scale(0.97);
+}
+
+.save-button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
 }
 
 
-// -------------------------
-// ЛАСТИК
-// -------------------------
+/* Выпадающее меню */
 
-let isErasing = false;
+.save-menu {
+    display: none;
 
+    position: absolute;
+    left: 0;
+    top: calc(100% + 6px);
 
-// Начало стирания
-censoredCanvas.addEventListener("pointerdown", function (event) {
+    min-width: 210px;
 
-    isErasing = true;
+    padding: 6px;
 
-    erase(event);
-});
+    background: #111827;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
 
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 
-// Движение ластика
-censoredCanvas.addEventListener("pointermove", function (event) {
-
-    if (!isErasing) {
-        return;
-    }
-
-    erase(event);
-});
+    z-index: 100;
+}
 
 
-// Закончили стирать
-censoredCanvas.addEventListener("pointerup", function () {
+/* Кнопки внутри меню */
 
-    isErasing = false;
-});
+.save-menu button {
+    display: block;
 
+    width: 100%;
 
-censoredCanvas.addEventListener("pointerleave", function () {
+    padding: 10px 12px;
 
-    isErasing = false;
-});
+    border: none;
+    border-radius: 8px;
 
+    background: transparent;
+    color: #e5e7eb;
 
-// -------------------------
-// Функция стирания
-// -------------------------
+    font-size: 14px;
+    text-align: left;
 
-function erase(event) {
+    cursor: pointer;
 
-    const rect = censoredCanvas.getBoundingClientRect();
+    transition:
+        background 0.15s ease,
+        color 0.15s ease;
+}
 
-    const scaleX = censoredCanvas.width / rect.width;
-    const scaleY = censoredCanvas.height / rect.height;
+.save-menu button:hover {
+    background: rgba(91, 33, 182, 0.25);
+    color: white;
+}
 
-    const x = (event.clientX - rect.left) * scaleX;
-    const y = (event.clientY - rect.top) * scaleY;
+.save-menu button:active {
+    background: rgba(91, 33, 182, 0.4);
+}
 
+/* Кнопки "Сбросить"и "Отменить" */
 
-    censoredCtx.save();
+#undoButton,
+#resetButton {
+    border: none;
+    background: linear-gradient(135deg, #5b21b6, #2563eb);
+    color: white;
 
-    // Делаем рисуемое место прозрачным
-    censoredCtx.globalCompositeOperation = "destination-out";
+    padding: 9px 16px;
+    border-radius: 10px;
 
+    font-size: 14px;
+    font-weight: 600;
 
-    censoredCtx.beginPath();
+    cursor: pointer;
 
-    censoredCtx.arc(
-        x,
-        y,
-        brushSize / 2,
-        0,
-        Math.PI * 2
-    );
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease;
+}
 
+#undoButton:hover:not(:disabled),
+#resetButton:hover:not(:disabled) {
+    background: linear-gradient(135deg, #7c3aed, #3b82f6);
+    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.25);
+}
+
+#undoButton:active:not(:disabled),
+#resetButton:active:not(:disabled) {
+    transform: scale(0.97);
+}
+
+#undoButton:disabled,
+#resetButton:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
     censoredCtx.fill();
 
 
