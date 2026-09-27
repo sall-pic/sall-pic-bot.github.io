@@ -1,1045 +1,559 @@
-/* =========================
-   ОСНОВА
-========================= */
+const translations = {
+    ru: {
 
-* {
-    box-sizing: border-box;
+        title: "Image Cleaner",
+        subtitle: "Удали цензуру вручную,<br>используя оригинальную версию изображения.",
+
+        preparation: "Подготовка",
+        preparationText: "Загрузи две версии одного изображения",
+
+        censored: "Цензурная картинка",
+        censoredText: "Версия с цензурой",
+
+        original: "Оригинальная картинка",
+        originalText: "Версия без цензуры",
+
+        select: "Выбрать",
+        change: "Заменить",
+
+        editor: "Редактор",
+        editorText: "Стирай пальцем/мышкой по изображению",
+
+        eraser: "Ластик",
+        brushSize: "Размер ластика",
+
+        footer: "Image Cleaner",
+        telegramApp: "Telegram Mini App",
+
+        save: "Сохранить",
+        saveCensored: "Цензурную картинку",
+        saveOriginal: "Оригинальную картинку",
+        saveBoth: "Обе картинки",
+
+        undo: "Отменить",
+        reset: "Сбросить"
+    },
+
+    en: {
+
+        title: "Image Cleaner",
+        subtitle: "Remove censorship manually,<br>using the original image.",
+
+        preparation: "Preparation",
+        preparationText: "Upload two versions of the same image",
+
+        censored: "Censored image",
+        censoredText: "Version with censorship",
+
+        original: "Original image",
+        originalText: "Uncensored version",
+
+        select: "Select",
+        change: "Change",
+
+        editor: "Editor",
+        editorText: "Erase with your finger/mouse",
+
+        eraser: "Eraser",
+        brushSize: "Brush size",
+
+        footer: "Image Cleaner",
+        telegramApp: "Telegram Mini App",
+        
+        save: "Save",
+        saveCensored: "Censored image",
+        saveOriginal: "Original image",
+        saveBoth: "Both images",
+        undo: "Undo",
+        reset: "Reset"
+    }
+};
+let currentLanguage = "ru";
+
+const languageToggle = document.getElementById("languageToggle");
+const title = document.getElementById("title");
+const subtitle = document.getElementById("subtitle");
+const preparation = document.getElementById("preparation");
+const preparationText = document.getElementById("preparationText");
+const censored = document.getElementById("censored");
+const censoredText = document.getElementById("censoredText");
+const original = document.getElementById("original");
+const originalText = document.getElementById("originalText");
+const editor = document.getElementById("editor");
+const editorText = document.getElementById("editorText");
+const eraser = document.getElementById("eraser");
+const brushSizeText = document.getElementById("brushSizeText");
+const censoredSelect = document.getElementById("censoredSelect");
+const originalSelect = document.getElementById("originalSelect");
+const censoredChange = document.getElementById("censoredChange");
+const originalChange = document.getElementById("originalChange");
+const languageFlag = document.getElementById("languageFlag");
+const languageCode = document.getElementById("languageCode");
+const saveButton = document.getElementById("saveButton");
+const saveButtonText = document.getElementById("saveButtonText");
+const undoButton = document.getElementById("undoButton");
+const undoButtonText = document.getElementById("undoButtonText");
+
+const resetButton = document.getElementById("resetButton");
+const resetButtonText = document.getElementById("resetButtonText");
+const saveArrow = document.getElementById("saveArrow");
+const saveMenu = document.getElementById("saveMenu");
+const saveCensored = document.getElementById("saveCensored");
+const saveOriginal = document.getElementById("saveOriginal");
+const saveBoth = document.getElementById("saveBoth");
+
+      languageToggle.addEventListener("click", function () {
+
+    if (currentLanguage === "ru") {
+
+        currentLanguage = "en";
+
+        languageFlag.className = "flag flag-en";
+        languageCode.textContent = "EN";
+
+        censoredChange.textContent = translations.en.change;
+        originalChange.textContent = translations.en.change;
+        
+        title.textContent = translations.en.title;
+        subtitle.innerHTML = translations.en.subtitle;
+        saveButtonText.textContent = translations.en.save;
+        saveCensored.textContent = translations.en.saveCensored;
+        saveOriginal.textContent = translations.en.saveOriginal;
+        saveBoth.textContent = translations.en.saveBoth;
+        preparation.textContent = translations.en.preparation;
+        preparationText.textContent = translations.en.preparationText;
+        censored.textContent = translations.en.censored;
+        censoredText.textContent = translations.en.censoredText;
+        original.textContent = translations.en.original;
+        originalText.textContent = translations.en.originalText;
+        editor.textContent = translations.en.editor;
+        editorText.textContent = translations.en.editorText;
+        eraser.textContent = "✦ " + translations.en.eraser;
+        brushSizeText.textContent = translations.en.brushSize;
+        undoButtonText.textContent = translations.en.undo;
+        resetButtonText.textContent = translations.en.reset;
+
+        censoredSelect.textContent = translations.en.select;
+        originalSelect.textContent = translations.en.select;
+
+     } else {
+
+        currentLanguage = "ru";
+
+        languageFlag.className = "flag flag-ru";
+        languageCode.textContent = "RU";
+
+        censoredChange.textContent = translations.ru.change;
+        originalChange.textContent = translations.ru.change;
+
+        title.textContent = translations.ru.title;
+        subtitle.innerHTML = translations.ru.subtitle;
+
+        saveButtonText.textContent = translations.ru.save;
+        saveCensored.textContent = translations.ru.saveCensored;
+        saveOriginal.textContent = translations.ru.saveOriginal;
+        saveBoth.textContent = translations.ru.saveBoth;
+
+        preparation.textContent = translations.ru.preparation;
+        preparationText.textContent = translations.ru.preparationText;
+        censored.textContent = translations.ru.censored;
+        censoredText.textContent = translations.ru.censoredText;
+        original.textContent = translations.ru.original;
+        originalText.textContent = translations.ru.originalText;
+        editor.textContent = translations.ru.editor;
+        editorText.textContent = translations.ru.editorText;
+        eraser.textContent = "✦ " + translations.ru.eraser;
+        brushSizeText.textContent = translations.ru.brushSize;
+        undoButtonText.textContent = translations.ru.undo;
+        resetButtonText.textContent = translations.ru.reset;
+
+        censoredSelect.textContent = translations.ru.select;
+        originalSelect.textContent = translations.ru.select;
+
+    }
+});
+const censoredInput = document.getElementById("censoredInput");
+const originalInput = document.getElementById("originalInput");
+
+const imageContainer = document.getElementById("imageContainer");
+
+const originalCanvas = document.getElementById("originalCanvas");
+const censoredCanvas = document.getElementById("censoredCanvas");
+
+const originalCtx = originalCanvas.getContext("2d");
+const censoredCtx = censoredCanvas.getContext("2d");
+
+let censoredImage = null;
+let originalImage = null;
+
+let brushSize = 80;
+
+const brushSizeSlider = document.getElementById("brushSize");
+const brushSizeValue = document.getElementById("brushSizeValue");
+
+brushSizeSlider.addEventListener("input", function () {
+    brushSize = Number(brushSizeSlider.value);
+
+    brushSizeValue.textContent = brushSize;
+});
+
+
+// -------------------------
+// Загрузка цензурной картинки
+// -------------------------
+
+censoredInput.addEventListener("change", function () {
+    const file = censoredInput.files[0];
+
+    if (!file) {
+        return;
+    }
+
+    const imageUrl = URL.createObjectURL(file);
+
+    const image = new Image();
+
+    image.onload = function () {
+        censoredImage = image;
+        checkImages();
+         censoredSelect.style.display = "none";
+         censoredChange.style.display = "block";
+    };
+
+    image.src = imageUrl;
+});
+
+
+// -------------------------
+// Загрузка оригинальной картинки
+// -------------------------
+
+originalInput.addEventListener("change", function () {
+    const file = originalInput.files[0];
+
+    if (!file) {
+        return;
+    }
+
+    const imageUrl = URL.createObjectURL(file);
+
+    const image = new Image();
+
+    image.onload = function () {
+        originalImage = image;
+        checkImages();
+        originalSelect.style.display = "none";
+        originalChange.style.display = "block";
+    };
+
+    image.src = imageUrl;
+});
+
+
+// -------------------------
+// Проверяем обе картинки
+// -------------------------
+
+function checkImages() {
+    if (censoredImage && originalImage) {
+        setupEditor();
+        saveButton.disabled = !(censoredImage && originalImage);
+    }
 }
 
-html {
-    background: #070b14;
-}
 
-body {
-    margin: 0;
-    padding: 0;
+// -------------------------
+// Создаём редактор
+// -------------------------
 
-    min-height: 100vh;
+function setupEditor() {
 
-    background:
-        radial-gradient(
-            circle at 50% -10%,
-            #182344 0%,
-            #0b1020 38%,
-            #070b14 75%
-        );
+    const width = originalImage.naturalWidth;
+    const height = originalImage.naturalHeight;
 
-    color: #ffffff;
+    // Размер обоих Canvas
+    originalCanvas.width = width;
+    originalCanvas.height = height;
 
-    font-family:
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        Arial,
-        sans-serif;
-
-    -webkit-font-smoothing: antialiased;
-}
+    censoredCanvas.width = width;
+    censoredCanvas.height = height;
 
 
-/* =========================
-   ОСНОВНОЙ КОНТЕЙНЕР
-========================= */
+    // Рисуем оригинал на нижнем Canvas
+    originalCtx.clearRect(0, 0, width, height);
 
-.app {
-    width: 100%;
-    max-width: 720px;
-
-    margin: 0 auto;
-
-    padding:
-        24px
-        20px
-        40px;
-}
-
-
-/* =========================
-   HEADER
-========================= */
-
-.header {
-    text-align: center;
-
-    margin-bottom: 48px;
-}
-
-
-/* ЛОГО */
-
-.logo {
-    width: 64px;
-    height: 64px;
-
-    margin: 0 auto 18px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 20px;
-
-    background: linear-gradient(
-        135deg,
-        #0b1020,
-        #172554,
-        #2e1065
+    originalCtx.drawImage(
+        originalImage,
+        0,
+        0,
+        width,
+        height
     );
 
-    font-size: 27px;
 
-    box-shadow:
-        0 12px 35px rgba(46, 16, 101, 0.35);
-}
-
-
-/* ЗАГОЛОВОК */
-
-.header h1 {
-    margin: 0;
-
-    font-size: clamp(32px, 7vw, 44px);
-
-    line-height: 1.05;
-
-    letter-spacing: -1.5px;
-
-    font-weight: 800;
-}
-
-
-/* ОПИСАНИЕ */
-
-.header p {
-    margin: 18px auto 0;
-
-    max-width: 500px;
-
-    color: #9ca3b5;
-
-    font-size: 16px;
-
-    line-height: 1.6;
-}
-
-
-/* =========================
-   СЕКЦИИ
-========================= */
-
-.upload-section,
-.editor-section {
-    margin-bottom: 36px;
-}
-
-
-.section-title {
-    margin-bottom: 16px;
-}
-
-
-.section-title h2,
-.editor-header h2 {
-    margin: 0;
-
-    font-size: 23px;
-
-    letter-spacing: -0.4px;
-}
-
-
-.section-title p,
-.editor-header p {
-    margin: 7px 0 0;
-
-    color: #747d92;
-
-    font-size: 14px;
-}
-
-
-/* =========================
-   КАРТОЧКИ ЗАГРУЗКИ
-========================= */
-
-.upload-card {
-    position: relative;
-
-    display: flex;
-    align-items: center;
-
-    width: 100%;
-
-    min-height: 94px;
-
-    margin-bottom: 14px;
-
-    padding: 16px;
-
-    border: 1px solid #242b3b;
-
-    border-radius: 20px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #171c29,
-            #111621
-        );
-
-    cursor: pointer;
-
-    transition:
-        transform 0.15s ease,
-        border-color 0.15s ease,
-        background 0.15s ease;
-}
-
-
-.upload-card:active {
-    transform: scale(0.985);
-
-    border-color: #4c3a8c;
-}
-
-
-.upload-card:hover {
-    border-color: #34405a;
-}
-
-
-/* ИКОНКА */
-
-.upload-icon {
-    flex-shrink: 0;
-
-    width: 52px;
-    height: 52px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    margin-right: 14px;
-
-    border-radius: 15px;
-
-    background: #202536;
-
-    color: #9274ff;
-
-    font-size: 23px;
-}
-
-
-/* ТЕКСТ */
-
-.upload-info {
-    min-width: 0;
-
-    flex: 1;
-}
-
-
-.upload-info strong {
-    display: block;
-
-    margin-bottom: 5px;
-
-    font-size: 16px;
-
-    font-weight: 700;
-}
-
-
-.upload-info span {
-    display: block;
-
-    color: #737d91;
-
-    font-size: 13px;
-}
-
-
-/* КНОПКА */
-
-.upload-button {
-    flex-shrink: 0;
-
-    padding: 12px 16px;
-
-    border-radius: 13px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #7047ff,
-            #5930d8
-        );
-
-    color: white;
-
-    font-size: 14px;
-
-    font-weight: 700;
-
-    box-shadow:
-        0 8px 20px rgba(91, 48, 216, 0.22);
-}
-
-
-/* СКРЫВАЕМ НАСТОЯЩИЙ INPUT */
-
-.upload-card input[type="file"] {
-    display: none;
-}
-
-
-/* =========================
-   РЕДАКТОР
-========================= */
-
-.editor-header {
-    display: flex;
-
-    align-items: flex-end;
-
-    justify-content: space-between;
-
-    gap: 15px;
-
-    margin-bottom: 14px;
-}
-
-
-.editor-badge {
-    flex-shrink: 0;
-
-    padding: 8px 11px;
-
-    border-radius: 10px;
-
-    background: #171c27;
-
-    color: #858da0;
-
-    font-size: 12px;
-}
-
-
-/* =========================
-   CANVAS
-========================= */
-
-.editor {
-    position: relative;
-
-    width: 100%;
-
-    margin: 0 auto;
-
-    overflow: hidden;
-
-    border: 1px solid #2b3242;
-
-    border-radius: 20px;
-
-    background: #0d111b;
-
-    box-shadow:
-        0 20px 45px rgba(0, 0, 0, 0.25);
-
-    line-height: 0;
-}
-
-
-.editor canvas {
-    display: block;
-
-    width: 100%;
-    height: auto;
-
-    max-width: 100%;
-}
-
-
-#censoredCanvas {
-    position: absolute;
-
-    top: 0;
-    left: 0;
-
-    width: 100%;
-    height: 100%;
-
-    cursor: crosshair;
-
-    touch-action: none;
-
-    user-select: none;
-
-    -webkit-user-select: none;
-}
-
-
-/* =========================
-   ЛАСТИК
-========================= */
-
-.brush-controls {
-    margin-top: 16px;
-
-    padding: 18px;
-
-    border: 1px solid #242b3b;
-
-    border-radius: 18px;
-
-    background: #111621;
-}
-
-
-.brush-top {
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    margin-bottom: 15px;
-
-    color: #9ba3b5;
-
-    font-size: 14px;
-}
-
-
-.brush-top strong {
-    color: white;
-
-    font-size: 15px;
-}
-
-
-/* RANGE */
-
-#brushSize {
-    display: block;
-
-    width: 100%;
-
-    height: 6px;
-
-    margin: 0;
-
-    appearance: none;
-    -webkit-appearance: none;
-
-    border-radius: 10px;
-
-    background: #292f40;
-
-    outline: none;
-
-    cursor: pointer;
-}
-
-
-/* Ползунок Chrome / Safari */
-
-#brushSize::-webkit-slider-thumb {
-    appearance: none;
-    -webkit-appearance: none;
-
-    width: 22px;
-    height: 22px;
-
-    border: 3px solid #ffffff;
-
-    border-radius: 50%;
-
-    background: #7047ff;
-
-    box-shadow:
-        0 4px 14px rgba(112, 71, 255, 0.45);
-}
-
-
-/* Ползунок Firefox */
-
-#brushSize::-moz-range-thumb {
-    width: 22px;
-    height: 22px;
-
-    border: 3px solid #ffffff;
-
-    border-radius: 50%;
-
-    background: #7047ff;
-
-    box-shadow:
-        0 4px 14px rgba(112, 71, 255, 0.45);
-}
-
-
-.range-labels {
-    display: flex;
-
-    justify-content: space-between;
-
-    margin-top: 9px;
-
-    color: #596276;
-
-    font-size: 11px;
-}
-
-
-/* =========================
-   ПОДСКАЗКА
-========================= */
-
-.tip {
-    display: flex;
-
-    gap: 13px;
-
-    padding: 17px;
-
-    border: 1px solid #252c3d;
-
-    border-radius: 18px;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(23, 37, 84, 0.35),
-            rgba(46, 16, 101, 0.2)
-        );
-}
-
-
-.tip-icon {
-    flex-shrink: 0;
-
-    width: 38px;
-    height: 38px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 12px;
-
-    background: #1b2440;
-
-    font-size: 18px;
-}
-
-
-.tip strong {
-    display: block;
-
-    margin-bottom: 5px;
-
-    font-size: 14px;
-}
-
-
-.tip p {
-    margin: 0;
-
-    color: #858ea1;
-
-    font-size: 13px;
-
-    line-height: 1.5;
-}
-
-
-/* =========================
-   FOOTER
-========================= */
-
-footer {
-    padding-top: 28px;
-
-    text-align: center;
-
-    color: #4f586b;
-
-    font-size: 12px;
-}
-
-
-footer span {
-    margin: 0 5px;
-
-    color: #6d28d9;
-}
-
-
-/* =========================
-   МОБИЛЬНЫЕ
-========================= */
-
-@media (max-width: 560px) {
-
-    .app {
-        padding:
-            20px
-            14px
-            30px;
-    }
-
-
-    .header {
-        margin-bottom: 36px;
-    }
-
-
-    .logo {
-        width: 56px;
-        height: 56px;
-
-        margin-bottom: 15px;
-
-        border-radius: 17px;
-
-        font-size: 24px;
-    }
-
-
-    .header h1 {
-        font-size: 34px;
-
-        letter-spacing: -1.2px;
-    }
-
-
-    .header p {
-        margin-top: 14px;
-
-        font-size: 14px;
-
-        line-height: 1.5;
-    }
-
-
-    .section-title h2,
-    .editor-header h2 {
-        font-size: 21px;
-    }
-
-
-    .upload-card {
-        min-height: 84px;
-
-        padding: 13px;
-
-        border-radius: 17px;
-    }
-
-
-    .upload-icon {
-        width: 46px;
-        height: 46px;
-
-        margin-right: 11px;
-
-        border-radius: 13px;
-
-        font-size: 20px;
-    }
-
-
-    .upload-info strong {
-        font-size: 14px;
-    }
-
-
-    .upload-info span {
-        font-size: 11px;
-    }
-
-
-    .upload-button {
-        padding: 10px 12px;
-
-        border-radius: 11px;
-
-        font-size: 12px;
-    }
-
-
-    .editor {
-        border-radius: 17px;
-    }
-
-
-    .brush-controls {
-        padding: 15px;
-
-        border-radius: 16px;
-    }
-
-
-    .tip {
-        padding: 14px;
-
-        border-radius: 16px;
-    }
-}
-
-
-/* =========================
-   ОЧЕНЬ МАЛЕНЬКИЕ ЭКРАНЫ
-========================= */
-
-@media (max-width: 370px) {
-
-    .app {
-        padding-left: 11px;
-        padding-right: 11px;
-    }
-
-
-    .header h1 {
-        font-size: 30px;
-    }
-
-
-    .upload-card {
-        padding: 11px;
-    }
-
-
-    .upload-icon {
-        width: 42px;
-        height: 42px;
-
-        margin-right: 9px;
-    }
-
-
-    .upload-info strong {
-        font-size: 13px;
-    }
-
-
-    .upload-button {
-        padding: 9px 10px;
-
-        font-size: 11px;
-    }
-
-
-    .editor-badge {
-        display: none;
-    }
-}
-
-/* =========================
-   КНОПКА СМЕНЫ ЯЗЫКА
-========================= */
-
-#languageToggle {
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    background: linear-gradient(135deg, #5b21b6, #2563eb);
-color: white;
-
-    padding: 7px 12px;
-    border-radius: 999px;
-
-    font-size: 14px;
-    font-weight: 600;
-
-    cursor: pointer;
-
-    margin-top: 10px;
-
-    transition:
-        transform 0.15s ease,
-        background 0.15s ease,
-        box-shadow 0.15s ease;
-}
-
-#languageToggle:hover {
-   background: linear-gradient(135deg, #7c3aed, #3b82f6);
-    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
-}
-
-#languageToggle:active {
-    transform: scale(0.95);
-}
-
-/* =========================
-      ЗНАЧКИ ФЛАГОВ
-========================= */
-
-.flag {
-    width: 18px;
-    height: 13px;
-
-    display: inline-block;
-
-    border-radius: 2px;
-
-    overflow: hidden;
-
-    flex-shrink: 0;
-}
-
-.flag-en {
-    background-color: #012169;
-
-    background-image:
-        /* Красный вертикальный крест */
-        linear-gradient(
-            to right,
-            transparent 43%,
-            #c8102e 43%,
-            #c8102e 57%,
-            transparent 57%
-        ),
-
-        /* Красный горизонтальный крест */
-        linear-gradient(
-            to bottom,
-            transparent 35%,
-            #c8102e 35%,
-            #c8102e 65%,
-            transparent 65%
-        ),
-
-        /* Белый вертикальный крест */
-        linear-gradient(
-            to right,
-            transparent 37%,
-            white 37%,
-            white 63%,
-            transparent 63%
-        ),
-
-        /* Белый горизонтальный крест */
-        linear-gradient(
-            to bottom,
-            transparent 25%,
-            white 25%,
-            white 75%,
-            transparent 75%
-        ),
-
-        /* Белая диагональ */
-        linear-gradient(
-            35deg,
-            transparent 38%,
-            white 38%,
-            white 46%,
-            transparent 46%,
-            transparent 54%,
-            white 54%,
-            white 62%,
-            transparent 62%
-        ),
-
-        /* Вторая белая диагональ */
-        linear-gradient(
-            -35deg,
-            transparent 38%,
-            white 38%,
-            white 46%,
-            transparent 46%,
-            transparent 54%,
-            white 54%,
-            white 62%,
-            transparent 62%
-        );
-}
-
-.flag-ru {
-    background: linear-gradient(
-        to bottom,
-        #ffffff 0%,
-        #ffffff 33%,
-        #2563eb 33%,
-        #2563eb 66%,
-        #dc2626 66%,
-        #dc2626 100%
+    // Рисуем цензуру на верхнем Canvas
+    censoredCtx.clearRect(0, 0, width, height);
+
+    censoredCtx.drawImage(
+        censoredImage,
+        0,
+        0,
+        width,
+        height
     );
-}
 
-/* =========================
-      КНОПКИ "ЗАМЕНИТЬ"
-========================= */
 
-.upload-actions {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-}
-
-.replace-button {
-    background: rgba(91, 33, 182, 0.25);
-    border: none;
-    display: none;
-}
-
-.replace-button:hover {
-    background: rgba(124, 58, 237, 0.4);
-}
-
-.editor-actions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-top: 12px;
-}
-
-.save-container {
-    position: relative;
-    display: inline-block;
-    width: max-content;
-    .save-container {
-    position: relative;
-    display: inline-block;
-    width: max-content;
-}
-}
-
-.save-button {
-    border: none;
-    background: linear-gradient(135deg, #5b21b6, #2563eb);
-    color: white;
-
-    padding: 9px 16px;
-    border-radius: 10px;
-
-    font-size: 14px;
-    font-weight: 600;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.15s ease,
-        background 0.15s ease,
-        box-shadow 0.15s ease;
-}
-
-.save-button:hover:not(:disabled) {
-    background: linear-gradient(135deg, #7c3aed, #3b82f6);
-    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.25);
-}
-
-.save-button:active:not(:disabled) {
-    transform: scale(0.97);
-}
-
-.save-button:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
+    // Показываем редактор
+    imageContainer.style.display = "block";
 }
 
 
-/* Выпадающее меню */
+// -------------------------
+// ЛАСТИК
+// -------------------------
 
-.save-menu {
-    display: none;
+let isErasing = false;
+let undoHistory = [];
 
-    position: absolute;
-    left: 0;
-    top: calc(100% + 6px);
+censoredCanvas.addEventListener("pointerdown", function (event) {
 
-    min-width: 210px;
+    if (event.button !== 0) {
+        return;
+    }
 
-    padding: 6px;
+     event.preventDefault();
 
-    background: #111827;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
+    undoHistory.push(
+        censoredCtx.getImageData(
+            0,
+            0,
+            censoredCanvas.width,
+            censoredCanvas.height
+        )
+    );
 
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    undoButton.disabled = false;
 
-    z-index: 100;
-}
+    isErasing = true;
+
+    censoredCanvas.setPointerCapture(event.pointerId);
+
+    erase(event);
+});
+
+// Начало стирания
+censoredCanvas.addEventListener("pointerdown", function (event) {
+
+    if (event.button !== 0) {
+        return;
+    }
+
+    event.preventDefault();
+
+    isErasing = true;
+
+    censoredCanvas.setPointerCapture(event.pointerId);
+
+    erase(event);
+});
 
 
-/* Кнопки внутри меню */
+// Движение ластика
+censoredCanvas.addEventListener("pointermove", function (event) {
 
-.save-menu button {
-    display: block;
+    if (!isErasing) {
+        return;
+    }
 
-    width: 100%;
+    // Если ЛКМ реально уже не зажата — прекращаем стирание
+    if (event.buttons !== 1) {
 
-    padding: 10px 12px;
+        isErasing = false;
 
-    border: none;
-    border-radius: 8px;
+        return;
+    }
 
-    background: transparent;
-    color: #e5e7eb;
+    erase(event);
+});
 
-    font-size: 14px;
-    text-align: left;
 
-    cursor: pointer;
+// Отпустили ЛКМ
+censoredCanvas.addEventListener("pointerup", function (event) {
 
-    transition:
-        background 0.15s ease,
-        color 0.15s ease;
-}
+    isErasing = false;
 
-.save-menu button:hover {
-    background: rgba(91, 33, 182, 0.25);
-    color: white;
-}
+    if (censoredCanvas.hasPointerCapture(event.pointerId)) {
+        censoredCanvas.releasePointerCapture(event.pointerId);
+    }
+});
 
-.save-menu button:active {
-    background: rgba(91, 33, 182, 0.4);
-}
+undoButton.addEventListener("click", function () {
 
-/* Кнопки "Сбросить"и "Отменить" */
+    if (undoHistory.length === 0) {
+        return;
+    }
 
-#undoButton,
-#resetButton {
-    border: none;
-    background: linear-gradient(135deg, #5b21b6, #2563eb);
-    color: white;
+    const previousState = undoHistory.pop();
 
-    padding: 9px 16px;
-    border-radius: 10px;
+    censoredCtx.putImageData(previousState, 0, 0);
 
-    font-size: 14px;
-    font-weight: 600;
+    // Если больше нечего отменять —
+    // отключаем обе кнопки
+    if (undoHistory.length === 0) {
+        undoButton.disabled = true;
+        resetButton.disabled = true;
+    }
 
-    cursor: pointer;
+});
 
-    transition:
-        transform 0.15s ease,
-        background 0.15s ease,
-        box-shadow 0.15s ease;
-}
 
-#undoButton:hover:not(:disabled),
-#resetButton:hover:not(:disabled) {
-    background: linear-gradient(135deg, #7c3aed, #3b82f6);
-    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.25);
-}
+// Браузер прервал указатель
+censoredCanvas.addEventListener("pointercancel", function () {
 
-#undoButton:active:not(:disabled),
-#resetButton:active:not(:disabled) {
-    transform: scale(0.97);
-}
+    isErasing = false;
+});
 
-#undoButton:disabled,
-#resetButton:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-}
+
+// Указатель потерял захват
+censoredCanvas.addEventListener("lostpointercapture", function () {
+
+    isErasing = false;
+});
+
+// -------------------------
+// Функция стирания
+// -------------------------
+
+function erase(event) {
+
+    const rect = censoredCanvas.getBoundingClientRect();
+
+    const scaleX = censoredCanvas.width / rect.width;
+    const scaleY = censoredCanvas.height / rect.height;
+
+    const x = (event.clientX - rect.left) * scaleX;
+    const y = (event.clientY - rect.top) * scaleY;
+
+
+    censoredCtx.save();
+
+    // Делаем рисуемое место прозрачным
+    censoredCtx.globalCompositeOperation = "destination-out";
+
+    resetButton.disabled = false;
+
+
+    censoredCtx.beginPath();
+
+    censoredCtx.arc(
+        x,
+        y,
+        brushSize / 2,
+        0,
+        Math.PI * 2
+    );
+
     censoredCtx.fill();
 
+
+    censoredCtx.restore();
+}
+
+// -------------------------
+// ФУНКЦИЯ СОХРАНЕНИЯ
+// -------------------------
+
+saveButton.addEventListener("click", function () {
+    if (saveMenu.style.display === "block") {
+        saveMenu.style.display = "none";
+        saveArrow.textContent = "▾";
+    } else {
+        saveMenu.style.display = "block";
+        saveArrow.textContent = "▴";
+    }
+});
+
+document.addEventListener("click", function (event) {
+    if (!saveButton.contains(event.target) && !saveMenu.contains(event.target)) {
+        saveMenu.style.display = "none";
+        saveArrow.textContent = "▾";
+    }
+});
+
+saveCensored.addEventListener("click", function () {
+    const link = document.createElement("a");
+
+    link.download = "image-cleaner-censored.png";
+    link.href = censoredCanvas.toDataURL("image/png");
+
+    link.click();
+
+    saveMenu.style.display = "none";
+});
+
+
+saveOriginal.addEventListener("click", function () {
+    const link = document.createElement("a");
+
+    link.download = "image-cleaner-original.png";
+    link.href = originalCanvas.toDataURL("image/png");
+
+    link.click();
+
+    saveMenu.style.display = "none";
+});
+
+
+saveBoth.addEventListener("click", function () {
+    const censoredLink = document.createElement("a");
+
+    censoredLink.download = "image-cleaner-censored.png";
+    censoredLink.href = censoredCanvas.toDataURL("image/png");
+    censoredLink.click();
+
+    const originalLink = document.createElement("a");
+
+    originalLink.download = "image-cleaner-original.png";
+    originalLink.href = originalCanvas.toDataURL("image/png");
+    originalLink.click();
+
+    saveMenu.style.display = "none";
+});
+
+// -------------------------
+// КНОПКА СБРОСА И ОТМЕНЫ
+// --
+
+resetButton.addEventListener("click", function () {
+
+    if (!censoredImage) {
+        return;
+    }
+
+    censoredCanvas.width = censoredImage.width;
+    censoredCanvas.height = censoredImage.height;
+
+    censoredCtx.clearRect(
+        0,
+        0,
+        censoredCanvas.width,
+        censoredCanvas.height
+    );
+
+    censoredCtx.drawImage(
+        censoredImage,
+        0,
+        0,
+        censoredCanvas.width,
+        censoredCanvas.height
+    );
+
+   undoHistory = [];
+
+   undoButton.disabled = true;
+   resetButton.disabled = true;
+
+});
 
     censoredCtx.restore();
 }
